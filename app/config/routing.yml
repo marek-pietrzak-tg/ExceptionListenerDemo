@@ -1,0 +1,5 @@
+greeting:
+    path: "/{name}"
+    defaults: { _controller: \App\Controller\GreeterController::greetAction, _format: json }
+    requirements: { _format: json }
+    methods: [ GET ]

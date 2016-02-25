@@ -1,0 +1,5 @@
+imports:
+    - { resource: services.yml }
+
+framework:
+    secret: SOME_SECRET12345

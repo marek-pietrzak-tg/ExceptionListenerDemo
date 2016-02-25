@@ -1,0 +1,11 @@
+{
+    "require": {
+        "symfony/symfony": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {"": "src/"},
+        "classmap": [
+            "app/AppKernel.php"
+        ]
+    }
+}
