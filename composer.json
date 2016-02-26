@@ -7,5 +7,11 @@
         "classmap": [
             "app/AppKernel.php"
         ]
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^2.4"
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }

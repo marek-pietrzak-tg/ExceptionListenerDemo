@@ -1,3 +1,9 @@
 parameters:
 
 services:
+    greeter.simple:
+        class: App\Greeter\SimpleGreeter
+    greeter.controller:
+        class: App\Controller\GreeterController
+        arguments:
+            - "@greeter.simple"
