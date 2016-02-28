@@ -12,7 +12,7 @@ final class SimpleGreeter implements Greeter
     public function greet($name)
     {
         if ('Thief' === $name) {
-            throw new ThiefException();
+            throw new ThiefException('Attempted to greet a thief!');
         }
 
         return sprintf('Hello %s', $name);

@@ -1,6 +1,7 @@
 {
     "require": {
-        "symfony/symfony": "^3.0"
+        "symfony/symfony": "^3.0",
+        "symfony/monolog-bundle": "^2.8"
     },
     "autoload": {
         "psr-4": {"": "src/"},

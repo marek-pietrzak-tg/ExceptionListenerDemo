@@ -1,5 +1,3 @@
-parameters:
-
 services:
     greeter.simple:
         class: App\Greeter\SimpleGreeter
@@ -7,3 +5,9 @@ services:
         class: App\Controller\GreeterController
         arguments:
             - "@greeter.simple"
+    published_message.listener:
+        class: App\EventListener\PublishedMessageExceptionListener
+        arguments:
+            - "@logger"
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
