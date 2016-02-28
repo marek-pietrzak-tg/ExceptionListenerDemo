@@ -1,12 +1,6 @@
-# symfony-micro-demo-app
-Convenient Symfony app skeleton based on MicroKernelTrait.
-Made as a base for demo purposes.
-Comes with separate files:
-- routing.yml
-- config.yml
-- services.yml
+# ExceptionListenerDemo
 
-and an example greeter controller.
+Demo symfony application showing how to write a custom exception listener.
 
 To start, install composer dependencies:
 ```
@@ -20,7 +14,12 @@ bin/console server:run
 
 and send a curl GET request to the Greeting controller:
 ```
-curl http://localhost:8000/Marek -i
+curl http://localhost:8000/greet/Marek -i
+
 ```
 
-Enjoy!
+To check an exception listener, try to greet a thief:
+```
+curl http://localhost:8000/greet/Thief -i
+
+```
