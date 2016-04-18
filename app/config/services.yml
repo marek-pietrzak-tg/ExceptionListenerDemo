@@ -7,7 +7,5 @@ services:
             - "@greeter.simple"
     published_message.listener:
         class: App\EventListener\PublishedMessageExceptionListener
-        arguments:
-            - "@logger"
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

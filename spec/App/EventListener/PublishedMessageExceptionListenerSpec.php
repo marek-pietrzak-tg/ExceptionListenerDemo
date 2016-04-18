@@ -5,37 +5,27 @@ namespace spec\App\EventListener;
 use App\Exception\PublishedMessageException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 class PublishedMessageExceptionListenerSpec extends ObjectBehavior
 {
-    function let(LoggerInterface $logger)
-    {
-        $this->beConstructedWith($logger);
-    }
-
-    function it_sets_custom_response_and_logs_error_for_published_message_exception(
+    function it_sets_custom_response_for_published_message_exception(
         GetResponseForExceptionEvent $event,
-        PublishedMessageException $exception,
-        LoggerInterface $logger
+        PublishedMessageException $exception
     ) {
-        $message = 'MESSAGE';
-
         $event->getException()->willReturn($exception);
         $exception->getCode()->willReturn(400);
-        $exception->getMessage()->willReturn($message);
+        $exception->getMessage()->willReturn('MESSAGE');
 
         $event->setResponse(Argument::that(function($subject) {
             return $this->isJsonResponseCorrect($subject);
         }))->shouldBeCalled();
-        $logger->error('MESSAGE')->shouldBeCalled();
 
         $this->onKernelException($event);
     }
 
-    function it_does_not_set_response_for_exception(GetResponseForExceptionEvent $event)
+    function it_does_not_set_response_for_other_exceptions(GetResponseForExceptionEvent $event)
     {
         $event->getException()->willReturn(new \Exception('foo'));
 

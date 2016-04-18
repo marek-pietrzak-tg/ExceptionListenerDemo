@@ -3,25 +3,11 @@
 namespace App\EventListener;
 
 use App\Exception\PublishedMessageException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 class PublishedMessageExceptionListener
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
     /**
      * @param GetResponseForExceptionEvent $event
      */
@@ -32,8 +18,6 @@ class PublishedMessageExceptionListener
         if (!$exception instanceof PublishedMessageException) {
             return;
         }
-
-        $this->logger->error($exception->getMessage());
 
         $responseData = [
             'error' => [
