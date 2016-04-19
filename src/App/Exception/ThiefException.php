@@ -2,7 +2,6 @@
 
 namespace App\Exception;
 
-class ThiefException extends \Exception implements PublishedMessageException
+class ThiefException extends \Exception implements PublishedMessageException, UserInputException
 {
-    protected $code = 400;
 }

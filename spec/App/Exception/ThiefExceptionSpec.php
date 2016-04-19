@@ -3,6 +3,7 @@
 namespace spec\App\Exception;
 
 use App\Exception\PublishedMessageException;
+use App\Exception\UserInputException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -18,8 +19,8 @@ class ThiefExceptionSpec extends ObjectBehavior
         $this->shouldImplement(PublishedMessageException::class);
     }
 
-    function it_has_a_code_400()
+    function it_is_a_user_input_exception()
     {
-        $this->getCode()->shouldReturn(400);
+        $this->shouldImplement(UserInputException::class);
     }
 }

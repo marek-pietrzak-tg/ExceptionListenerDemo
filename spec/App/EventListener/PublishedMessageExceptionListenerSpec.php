@@ -3,6 +3,7 @@
 namespace spec\App\EventListener;
 
 use App\Exception\PublishedMessageException;
+use App\Exception\ThiefException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,15 +12,13 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 class PublishedMessageExceptionListenerSpec extends ObjectBehavior
 {
     function it_sets_custom_response_for_published_message_exception(
-        GetResponseForExceptionEvent $event,
-        PublishedMessageException $exception
+        GetResponseForExceptionEvent $event
     ) {
+        $exception = new ThiefException('MESSAGE');
         $event->getException()->willReturn($exception);
-        $exception->getCode()->willReturn(400);
-        $exception->getMessage()->willReturn('MESSAGE');
 
         $event->setResponse(Argument::that(function($subject) {
-            return $this->isJsonResponseCorrect($subject);
+            return $this->isJsonResponseCorrect($subject, 400);
         }))->shouldBeCalled();
 
         $this->onKernelException($event);
@@ -34,14 +33,27 @@ class PublishedMessageExceptionListenerSpec extends ObjectBehavior
         $this->onKernelException($event);
     }
 
-    private function isJsonResponseCorrect($jsonResponse)
+    function it_returns_code_500_for_non_user_input_exceptions(GetResponseForExceptionEvent $event, PublishedMessageException $exception)
+    {
+        $exception->getMessage()->willReturn('MESSAGE');
+        $event->getException()->willReturn($exception);
+
+        $event->setResponse(Argument::that(function($subject) {
+            return $this->isJsonResponseCorrect($subject, 500);
+        }))->shouldBeCalled();
+
+        $this->onKernelException($event);
+    }
+
+    private function isJsonResponseCorrect($jsonResponse, $code)
     {
         if (!$jsonResponse instanceof JsonResponse) {
             return false;
         }
 
-        $expectedResponse = '{"error":{"code":400,"message":"MESSAGE"}}';
+        $expectedResponse = '{"error":{"code":' . $code . ',"message":"MESSAGE"}}';
 
-        return $expectedResponse === $jsonResponse->getContent();
+        return $expectedResponse === $jsonResponse->getContent()
+            && $code === $jsonResponse->getStatusCode();
     }
 }
